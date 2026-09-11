@@ -290,7 +290,7 @@ h1.t{font-size:24px;font-weight:800;margin:10px 2px 4px}
 
 /* ---------- Theodore (pet) ---------- */
 .petscene{position:relative;border-radius:22px;aspect-ratio:1/1;margin-top:8px;overflow:hidden;border:1px solid var(--line);
-  background:#a9caee url('https://aventuracomjesus.com/app/assets/img/pet_room_bg.webp') center / 100% 100% no-repeat}
+  background:#a9caee url('assets/img/pet_room_bg.webp') center / 100% 100% no-repeat}
 .petscene .frame,.petscene .room-window,.petscene .room-floor{display:none}
 /* o presente neon já vem desenhado no fundo (igual ao nativo); aqui só uma área clicável transparente por cima */
 .petscene .gift{position:absolute;top:18%;right:5%;width:17%;height:15%;font-size:0;color:transparent;z-index:3;cursor:pointer;border-radius:12px;transition:transform .12s ease}
@@ -479,14 +479,14 @@ h1.t{font-size:24px;font-weight:800;margin:10px 2px 4px}
 .avitem{background:transparent;border:0;padding:0;box-shadow:none;color:inherit}
 
 /* ===================== reskin: fontes locais (zip) ===================== */
-@font-face{font-family:'Lato';src:url('https://aventuracomjesus.com/app/assets/fonts/Lato-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
-@font-face{font-family:'Lato';src:url('https://aventuracomjesus.com/app/assets/fonts/Lato-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
-@font-face{font-family:'Lato';src:url('https://aventuracomjesus.com/app/assets/fonts/Lato-Semibold.woff2') format('woff2');font-weight:600;font-display:swap}
-@font-face{font-family:'Lato';src:url('https://aventuracomjesus.com/app/assets/fonts/Lato-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
-@font-face{font-family:'Lato';src:url('https://aventuracomjesus.com/app/assets/fonts/Lato-Black.woff2') format('woff2');font-weight:800;font-display:swap}
-@font-face{font-family:'Quicksand';src:url('https://aventuracomjesus.com/app/assets/fonts/Quicksand-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
-@font-face{font-family:'Quicksand';src:url('https://aventuracomjesus.com/app/assets/fonts/Quicksand-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
-@font-face{font-family:'Quicksand';src:url('https://aventuracomjesus.com/app/assets/fonts/Quicksand-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'Lato';src:url('assets/fonts/Lato-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Lato';src:url('assets/fonts/Lato-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Lato';src:url('assets/fonts/Lato-Semibold.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:'Lato';src:url('assets/fonts/Lato-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'Lato';src:url('assets/fonts/Lato-Black.woff2') format('woff2');font-weight:800;font-display:swap}
+@font-face{font-family:'Quicksand';src:url('assets/fonts/Quicksand-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Quicksand';src:url('assets/fonts/Quicksand-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:'Quicksand';src:url('assets/fonts/Quicksand-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
 
 /* ===================== reskin: helpers de ícone ===================== */
 .icoW{filter:brightness(0) invert(1)}                 /* silhueta branca */
@@ -628,7 +628,7 @@ img.ico{width:22px;height:22px;object-fit:contain;display:block}
 
 /* ===================== overlays compartilhados (mood/outfits) ===================== */
 .iconbtn-close{background:var(--red);color:#fff;border:3px solid #fff;width:38px;height:38px;font-size:16px;font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-.mood-bg-room{position:absolute;inset:0;background:url('https://aventuracomjesus.com/app/assets/img/pet_room_bg.webp') center/cover no-repeat;z-index:1}
+.mood-bg-room{position:absolute;inset:0;background:url('assets/img/pet_room_bg.webp') center/cover no-repeat;z-index:1}
 /* DECORAÇÕES — mudam a atmosfera do quarto (camada própria, atrás do Theodore) */
 .petscene{position:relative}
 /* z-index 1 e o Davi ficava POR BAIXO do overlay: comprar "Quarto Neon" deixava o
@@ -646,10 +646,10 @@ img.ico{width:22px;height:22px;object-fit:contain;display:block}
    As imagens foram desenhadas com a metade de baixo VAZIA de propósito: o Davi fica
    em z-index 2, em pé no chão do cenário. A camada é a mesma .deco-fx de antes, então
    o crossfade do aplicarDeco() continua valendo sem mudar nada. */
-.room-day-night,.mood-bg-room.deco-day-night::after{background:url('https://aventuracomjesus.com/app/assets/img/pet_room_day-night.webp') center/cover no-repeat}
-.room-neon,.mood-bg-room.deco-neon::after{background:url('https://aventuracomjesus.com/app/assets/img/pet_room_neon.webp') center/cover no-repeat}
-.room-sunset,.mood-bg-room.deco-sunset::after{background:url('https://aventuracomjesus.com/app/assets/img/pet_room_sunset.webp') center/cover no-repeat}
-.room-christmas,.mood-bg-room.deco-christmas::after{background:url('https://aventuracomjesus.com/app/assets/img/pet_room_christmas.webp') center/cover no-repeat}
+.room-day-night,.mood-bg-room.deco-day-night::after{background:url('assets/img/pet_room_day-night.webp') center/cover no-repeat}
+.room-neon,.mood-bg-room.deco-neon::after{background:url('assets/img/pet_room_neon.webp') center/cover no-repeat}
+.room-sunset,.mood-bg-room.deco-sunset::after{background:url('assets/img/pet_room_sunset.webp') center/cover no-repeat}
+.room-christmas,.mood-bg-room.deco-christmas::after{background:url('assets/img/pet_room_christmas.webp') center/cover no-repeat}
 /* documento legal (Termos/Privacidade) — cartão branco legível */
 .legal-body{background:#fff;color:#234c5e;border-radius:14px;padding:18px 16px;margin:6px 0}
 .legal-body h1{font-size:21px;font-weight:800;color:#1d3d4c;margin:0 0 4px}
@@ -701,7 +701,7 @@ img.ico{width:22px;height:22px;object-fit:contain;display:block}
 
 /* ===================== Joke of the Day (palco vermelho, igual ao nativo) ===================== */
 .joke-screen{position:absolute;inset:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;
-  background:#4a1a1d url('https://aventuracomjesus.com/app/assets/img/joke_stage.webp') center/cover no-repeat}
+  background:#4a1a1d url('assets/img/joke_stage.webp') center/cover no-repeat}
 /* letreiro "marquee" com lâmpadas douradas */
 .joke-marquee{position:relative;margin-top:64px;background:#f7f4ee;color:#2a2018;font-family:'Quicksand',sans-serif;
   font-weight:800;font-size:15px;letter-spacing:1.5px;padding:14px 30px;border-radius:7px;
@@ -1258,7 +1258,7 @@ button:focus-visible,[role="button"]:focus-visible,select:focus-visible{outline:
 
 /* o quarto original também é um cenário: assim o cartão "Meu Quarto" tem o que
    mostrar e o crossfade tem de onde partir e pra onde ir */
-.room-padrao,.mood-bg-room.deco-padrao::after{background:url('https://aventuracomjesus.com/app/assets/img/pet_room_bg.webp') center/cover no-repeat}
+.room-padrao,.mood-bg-room.deco-padrao::after{background:url('assets/img/pet_room_bg.webp') center/cover no-repeat}
 
 /* ===== O ambiente tinge a TELA INTEIRA ==========================================
    Antes só o quadro do quarto mudava: o cenário laranja do pôr do sol encostava
