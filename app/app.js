@@ -2058,6 +2058,7 @@ function inClaimGrace(){ try{ return !!(state.claimedAt && (Date.now()-state.cla
 function recheckSub(){ toast('Verificando sua assinatura...'); checkEntitlement(); }
 function checkEntitlement(){
   if(window.__preview) return;   // MODO PREVIEW (link secreto): não valida assinatura, não trava
+  if(window.SKIP_SUB_CHECK) return;   // FASE DE VALIDAÇÃO BravoPay: não há ponte com /api/entitlement ainda, não trava ninguém
   if(!(state.user && state.user.email)) return;
   var base=(window.API_BASE||'').replace(/\/$/,'');
   if(!base) return;   // sem backend configurado: não trava (ex: rodando local/web dev)
@@ -2442,8 +2443,11 @@ if(window.__preview){ state.user = state.user || { email:'preview@aventuracomjes
   if(window.__preview || claimed){ ensureKidName(); }   // preview/pós-compra/link mágico: entra direto no conteúdo
   // se ainda não logou, mostra a tela de login por cima (o app só registra; o pagamento já foi no funil)
   else if(!(state.user && state.user.email)) openLoginScreen();
-  else { checkEntitlement();   // logado: valida assinatura no Stripe
-         var _lk = !!(state.ent && !state.ent.active) && !inClaimGrace(); if(_lk) showLockedScreen();   // trava aparece NA HORA (não espera o sync); quem comprou agora nunca é trancado
+  else { var _lk = false;
+         if(!window.SKIP_SUB_CHECK){
+           checkEntitlement();   // logado: valida assinatura no Stripe
+           _lk = !!(state.ent && !state.ent.active) && !inClaimGrace(); if(_lk) showLockedScreen();   // trava aparece NA HORA (não espera o sync); quem comprou agora nunca é trancado
+         }
          // liga/sincroniza com o BackendTheo e SÓ DEPOIS pergunta o nome do filho (evita pedir nome e o sync sobrescrever)
          var _sp = _jwt() ? pullState() : appLogin(state.user.email, state.user.name).then(pullState);
          if(!_lk) afterSync(_sp, function(){ ensureKidName(); }); }
