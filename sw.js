@@ -3,7 +3,7 @@
    index.html esta na RAIZ (e o resto do app em /app/), entao o sw precisa
    ficar na raiz pra ter escopo "/" — se ficasse em /app/ ele nao controlaria
    a pagina. Os caminhos do CORE seguem esse mesmo ajuste. */
-const V = '186'; // BUMPAR a cada release — senao offline serve versao velha
+const V = '187'; // BUMPAR a cada release — senao offline serve versao velha
 const CACHE = 'aventura-v' + V;
 const CORE = [
   '/', '/index.html', '/app/app.css', '/app/app.js', '/app/data.js',
@@ -34,8 +34,13 @@ self.addEventListener('fetch', e => {
   if (isAsset) {
     e.respondWith(
       caches.match(req).then(hit => hit || fetch(req).then(res => {
-        const copy = res.clone();
-        caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
+        // SO cacheia resposta BOA. O sw original guardava qualquer coisa — inclusive 404 —
+        // e um arquivo que ainda nao existia no deploy ficava "quebrado pra sempre"
+        // naquele navegador ate bumpar o V. Este if e a unica diferenca de logica.
+        if (res && res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
+        }
         return res;
       }).catch(() => hit))
     );
