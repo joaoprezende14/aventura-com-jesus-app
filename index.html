@@ -53,6 +53,13 @@
   // Acesso livre pra quem tem o link, sem exigir prova de pagamento nem login.
   // Voltar pra true assim que a oferta validar e a ponte BravoPay->assinatura existir.
   window.WEB_TOKEN_ONLY = false;
+  // SEGUNDA TRAVA: mesmo com WEB_TOKEN_ONLY desligado, o app pergunta pro backend
+  // (API_BASE + /api/entitlement) se aquele e-mail tem assinatura ATIVA (Stripe/Hotmart)
+  // e mostra "Sua assinatura não está ativa" pra quem não tem — o que bloquearia
+  // TODO mundo nesta fase, já que ninguém pagando por BravoPay existe nessa tabela.
+  // 11/09/2026: DESLIGADO de propósito, junto com WEB_TOKEN_ONLY, pelo mesmo motivo.
+  // Voltar pra false (ligando a trava de novo) assim que a ponte BravoPay existir.
+  window.SKIP_SUB_CHECK = true;
   // LINK MÁGICO: a porta de VOLTA (cliente antigo, trocou de celular, limpou os dados).
   // true = quem chega sem prova vê "digite seu e-mail e receba o link" em vez de ir pro
   // /baixar. Não dá acesso nenhum sozinho — só entra quem clicar no link que chega na
@@ -104,4 +111,3 @@
 </script>
 </body>
 </html>
-
