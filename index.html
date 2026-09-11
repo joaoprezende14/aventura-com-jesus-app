@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><!-- Clonado por Ads Searcher — origem: https://aventuracomjesus.com/app/ — 2026-09-11T15:03:13.638Z -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Aventura com Jesus</title>
+<meta name="description" content="Histórias bíblicas, meditações, orações e afirmações para crianças crescerem na fé.">
+<!-- PWA -->
+<link rel="manifest" href="https://aventuracomjesus.com/app/manifest.json">
+<meta name="theme-color" content="#0b1426">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Aventura com Jesus">
+<link rel="apple-touch-icon" href="https://aventuracomjesus.com/app/assets/img/logos/app_icon_180.png">
+<link rel="icon" type="image/png" href="https://aventuracomjesus.com/app/assets/img/logos/app_icon_192.png">
+<link rel="stylesheet" href="app/app.css">
+<script src="app/lottie.min.js"></script>
+<!-- SEM gravação de sessão. Microsoft Clarity e Smartlook foram REMOVIDOS: replay de tela
+     em app infantil é incompatível com o Programa Famílias do Google Play, e o app web é o
+     mesmo produto. A métrica que sobra é agregada e anônima (ANALYTICS_URL, backend próprio). -->
+<script>
+  // domínio onde o /api está deployado (funil). Ex: "https://aventuracomjesus.com".
+  // O login registra o usuário em API_BASE + "/api/register". Vazio = login funciona local, só não envia pro banco.
+  window.API_BASE = "https://aventuracomjesus.com";
+  // backend do APP (Railway) — dados do usuário (progresso, economia, streak): SINCRONIZA + PERSISTE.
+  // localStorage continua como cache/fallback (o app NUNCA cai por causa disso). Tudo best-effort.
+  // KILL-SWITCH: deixe "" pra DESLIGAR o sync na hora (app volta 100% pro localStorage).
+  window.APP_API = "https://backendtheo-production.up.railway.app/v1";
+  // métrica AGREGADA do app: track() manda os eventos (navegou, abriu_conteudo, viu_assinatura,
+  // clicou_assinar, notif_open...) pra cá; o painel BI lê em /api/app-event (x-admin-pass).
+  window.ANALYTICS_URL = window.API_BASE + "/api/app-event";
+  // ÁUDIO STREAMADO (mantém o APK leve — as narrações NÃO vão dentro do app).
+  // Vazio = usa os arquivos locais (https://aventuracomjesus.com/app/assets/audio/) — modo offline/dev.
+  window.AUDIO_BASE = "https://apk-download-dgtechsotutionss-projects.vercel.app/audio/";
+  window.AUDIO_VER = "1";   // alavanca de cache-bust: só bumpar se algum áudio JÁ publicado for trocado
+  // DESENHOS DO COLORIR. Este é um clone estático hospedado fora da origem original,
+  // então apontamos pro acervo de imagens que já existe no site de produção.
+  // ⚠️ Se o bucket original não tiver CORS liberado pra este domínio, a pintura (getImageData)
+  // pode quebrar — o restante do app funciona normalmente mesmo assim.
+  window.COLORIR_BASE = "https://aventuracomjesus.com/app/assets/colorir/";
+  // link do checkout/renovação (funil): abre a oferta atual (BravoPay)
+  window.STRIPE_CHECKOUT_URL = "https://aventuracomjesuscom-chi.vercel.app/?go=paywall";
+  // Web Push (PWA): chave PÚBLICA VAPID — vai embutida no cliente, NÃO é segredo.
+  // A privada fica só na Railway (VAPID_PRIVATE_KEY). Vazio = lembrete não é oferecido.
+  window.VAPID_PUBLIC_KEY = "BN4auWzkMjkIdxrYlH1qsia3anBpVcX-m9QROvfRaQiQvWrg8IKyJ-RjoGMa2gjpLu3fpsvGP3PGdud2U9ZvAo4";
+  // ENTRADA SÓ POR PROVA DE PAGAMENTO. true = o app web aceita apenas quem acabou de
+  // pagar (?si=/?sub=) ou já tem sessão; o resto vai pro /baixar e a tela de login
+  // (e-mail sem senha) nem aparece. É o que permite abrir o /app com segurança.
+  // 11/09/2026: DESLIGADO de propósito — fase de validação de oferta via BravoPay, que
+  // ainda não tem ponte com /api/claim nem /api/magic-link (só Stripe/Hotmart hoje).
+  // Acesso livre pra quem tem o link, sem exigir prova de pagamento nem login.
+  // Voltar pra true assim que a oferta validar e a ponte BravoPay->assinatura existir.
+  window.WEB_TOKEN_ONLY = false;
+  // LINK MÁGICO: a porta de VOLTA (cliente antigo, trocou de celular, limpou os dados).
+  // true = quem chega sem prova vê "digite seu e-mail e receba o link" em vez de ir pro
+  // /baixar. Não dá acesso nenhum sozinho — só entra quem clicar no link que chega na
+  // caixa de entrada. Deixado DESLIGADO até o canário terminar (menos variáveis na medição).
+  window.MAGIC_LINK = true;
+</script>
+</head>
+<body>
+
+<!-- splash inicial (logo Aventura com Jesus), some após carregar -->
+<div id="splash">
+  <img id="splash-logo" src="https://aventuracomjesus.com/app/assets/img/logos/logo_aventura_branco.webp" alt="Aventura com Jesus">
+</div>
+
+<div id="app">
+  <!-- header global (preenchido por JS, oculto em algumas telas) -->
+  <header class="hdr" id="hdr"></header>
+
+  <!-- tela ativa (renderizada por JS) -->
+  <div class="screen" id="screen"></div>
+
+  <!-- camada de overlays (fluxo de conteúdo, player, etc.) -->
+  <div id="overlay"></div>
+
+  <!-- mini-player global -->
+  <div class="mini" id="mini">
+    <div class="cv" id="mini-cv">🎵</div>
+    <div class="ti" id="mini-ti">—</div>
+    <button class="pp" id="mini-pp" aria-label="Reproduzir ou pausar"><img src="https://aventuracomjesus.com/app/assets/img/ic_music_pause.webp" class="icoB" alt=""></button>
+    <button class="up" id="mini-up" aria-label="Abrir player">⌃</button>
+  </div>
+
+  <!-- tab bar -->
+  <nav class="tabbar" id="tabbar"></nav>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<!-- áudio de fundo do player -->
+<audio id="bg-audio" src="https://aventuracomjesus.com/app/assets/sound/background.mp3" loop preload="none"></audio>
+
+<script src="app/data.js"></script>
+<script src="app/app.js"></script>
+<script defer src="app/colorir.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+  }
+</script>
+</body>
+</html>
+
