@@ -41,11 +41,9 @@
   // Vazio = usa os arquivos locais (app/assets/audio/) — modo offline/dev.
   window.AUDIO_BASE = "https://apk-download-dgtechsotutionss-projects.vercel.app/audio/";
   window.AUDIO_VER = "1";   // alavanca de cache-bust: só bumpar se algum áudio JÁ publicado for trocado
-  // DESENHOS DO COLORIR. Os PNGs de colorir não vieram no clone estático (não foram
-  // baixados pelo crawler) e, por instrução explícita, este deploy não referencia o
-  // domínio do site original pra nenhum asset. Deixado vazio de propósito: a função
-  // colorir() fica indisponível/quebrada por enquanto (o resto do app funciona normal).
-  // Assim que os PNGs de colorir forem enviados pro repo, aponte pra "app/assets/colorir/".
+  // DESENHOS DO COLORIR. Vazio = usa os arquivos locais (app/assets/colorir/), que
+  // agora estão todos no repositório — o Colorir funciona normal e offline.
+  // Só preencher se um dia os PNGs passarem a ser servidos por um CDN.
   window.COLORIR_BASE = "";
   // link do checkout/renovação (funil): abre a oferta atual (BravoPay)
   window.STRIPE_CHECKOUT_URL = "https://aventuracomjesuscom-chi.vercel.app/?go=paywall";
@@ -113,7 +111,9 @@
 <script defer src="/app/colorir.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+    // sw.js fica na RAIZ (e não em /app/) porque só assim o escopo dele cobre "/",
+    // que é onde o index.html está servido neste deploy.
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(()=>{}));
   }
 </script>
 </body>
