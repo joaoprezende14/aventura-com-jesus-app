@@ -6,14 +6,14 @@
 <title>Aventura com Jesus</title>
 <meta name="description" content="Histórias bíblicas, meditações, orações e afirmações para crianças crescerem na fé.">
 <!-- PWA -->
-<link rel="manifest" href="https://aventuracomjesus.com/app/manifest.json">
+<link rel="manifest" href="app/manifest.json">
 <meta name="theme-color" content="#0b1426">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Aventura com Jesus">
-<link rel="apple-touch-icon" href="https://aventuracomjesus.com/app/assets/img/logos/app_icon_180.png">
-<link rel="icon" type="image/png" href="https://aventuracomjesus.com/app/assets/img/logos/app_icon_192.png">
+<link rel="apple-touch-icon" href="app/assets/img/logos/app_icon_180.png">
+<link rel="icon" type="image/png" href="app/assets/img/logos/app_icon_192.png">
 <link rel="stylesheet" href="app/app.css">
 <script src="app/lottie.min.js"></script>
 <!-- SEM gravação de sessão. Microsoft Clarity e Smartlook foram REMOVIDOS: replay de tela
@@ -31,14 +31,15 @@
   // clicou_assinar, notif_open...) pra cá; o painel BI lê em /api/app-event (x-admin-pass).
   window.ANALYTICS_URL = window.API_BASE + "/api/app-event";
   // ÁUDIO STREAMADO (mantém o APK leve — as narrações NÃO vão dentro do app).
-  // Vazio = usa os arquivos locais (https://aventuracomjesus.com/app/assets/audio/) — modo offline/dev.
+  // Vazio = usa os arquivos locais (app/assets/audio/) — modo offline/dev.
   window.AUDIO_BASE = "https://apk-download-dgtechsotutionss-projects.vercel.app/audio/";
   window.AUDIO_VER = "1";   // alavanca de cache-bust: só bumpar se algum áudio JÁ publicado for trocado
-  // DESENHOS DO COLORIR. Este é um clone estático hospedado fora da origem original,
-  // então apontamos pro acervo de imagens que já existe no site de produção.
-  // ⚠️ Se o bucket original não tiver CORS liberado pra este domínio, a pintura (getImageData)
-  // pode quebrar — o restante do app funciona normalmente mesmo assim.
-  window.COLORIR_BASE = "https://aventuracomjesus.com/app/assets/colorir/";
+  // DESENHOS DO COLORIR. Os PNGs de colorir não vieram no clone estático (não foram
+  // baixados pelo crawler) e, por instrução explícita, este deploy não referencia o
+  // domínio do site original pra nenhum asset. Deixado vazio de propósito: a função
+  // colorir() fica indisponível/quebrada por enquanto (o resto do app funciona normal).
+  // Assim que os PNGs de colorir forem enviados pro repo, aponte pra "app/assets/colorir/".
+  window.COLORIR_BASE = "";
   // link do checkout/renovação (funil): abre a oferta atual (BravoPay)
   window.STRIPE_CHECKOUT_URL = "https://aventuracomjesuscom-chi.vercel.app/?go=paywall";
   // Web Push (PWA): chave PÚBLICA VAPID — vai embutida no cliente, NÃO é segredo.
@@ -63,7 +64,7 @@
 
 <!-- splash inicial (logo Aventura com Jesus), some após carregar -->
 <div id="splash">
-  <img id="splash-logo" src="https://aventuracomjesus.com/app/assets/img/logos/logo_aventura_branco.webp" alt="Aventura com Jesus">
+  <img id="splash-logo" src="app/assets/img/logos/logo_aventura_branco.webp" alt="Aventura com Jesus">
 </div>
 
 <div id="app">
@@ -80,7 +81,7 @@
   <div class="mini" id="mini">
     <div class="cv" id="mini-cv">🎵</div>
     <div class="ti" id="mini-ti">—</div>
-    <button class="pp" id="mini-pp" aria-label="Reproduzir ou pausar"><img src="https://aventuracomjesus.com/app/assets/img/ic_music_pause.webp" class="icoB" alt=""></button>
+    <button class="pp" id="mini-pp" aria-label="Reproduzir ou pausar"><img src="app/assets/img/ic_music_pause.webp" class="icoB" alt=""></button>
     <button class="up" id="mini-up" aria-label="Abrir player">⌃</button>
   </div>
 
@@ -91,7 +92,7 @@
 </div>
 
 <!-- áudio de fundo do player -->
-<audio id="bg-audio" src="https://aventuracomjesus.com/app/assets/sound/background.mp3" loop preload="none"></audio>
+<audio id="bg-audio" src="app/assets/sound/background.mp3" loop preload="none"></audio>
 
 <script src="app/data.js"></script>
 <script src="app/app.js"></script>
